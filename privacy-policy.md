@@ -260,7 +260,7 @@ If you have questions, concerns, or requests regarding this Privacy Policy or yo
 **Email**: whynkay@gmail.com
 **Response Time**: We aim to respond within 7 business days
 
-**For EU/UK Users - Data Protection Officer**: privacy@effici.app
+**For EU/UK Users - Data Protection Officer**: whynkay@gmail.com
 
 ---
 
