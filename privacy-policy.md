@@ -203,7 +203,7 @@ You can:
 
 Effici is **not intended for children under the age of 13** (or 16 in the EU).
 
-We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately at [support@effici.app], and we will delete that information.
+We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately at [whynkay@gmail.com], and we will delete that information.
 
 ---
 
@@ -249,7 +249,7 @@ If you are a California resident, you have the following rights:
 - **Right to Opt-Out**: Opt out of the sale of personal information (we don't sell data)
 - **Right to Non-Discrimination**: Not be discriminated against for exercising your rights
 
-To exercise these rights, contact us at [support@effici.app].
+To exercise these rights, contact us at [whynkay@gmail.com].
 
 ---
 
@@ -257,7 +257,7 @@ To exercise these rights, contact us at [support@effici.app].
 
 If you have questions, concerns, or requests regarding this Privacy Policy or your personal data, please contact us:
 
-**Email**: support@effici.app
+**Email**: whynkay@gmail.com
 **Response Time**: We aim to respond within 7 business days
 
 **For EU/UK Users - Data Protection Officer**: privacy@effici.app

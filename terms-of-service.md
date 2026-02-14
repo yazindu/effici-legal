@@ -324,7 +324,7 @@ If you do not agree to the modified Terms, you must stop using the App and delet
 These Terms are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to conflict of law principles.
 
 ### 15.2 Dispute Resolution
-**Informal Resolution**: Before filing a claim, you agree to contact us at support@effici.app to attempt to resolve the dispute informally.
+**Informal Resolution**: Before filing a claim, you agree to contact us at whynkay@gmail.com to attempt to resolve the dispute informally.
 
 **Arbitration (If Applicable)**: Any disputes not resolved informally shall be resolved through binding arbitration in accordance with [Arbitration Rules].
 
@@ -364,7 +364,7 @@ If these Terms are translated into other languages, the English version shall pr
 
 If you have questions about these Terms of Service, please contact us:
 
-**Email**: support@effici.app
+**Email**: whynkay@gmail.com
 **Privacy Officer**: privacy@effici.app
 **Response Time**: 7 business days
 
