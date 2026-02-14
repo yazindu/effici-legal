@@ -321,12 +321,12 @@ If you do not agree to the modified Terms, you must stop using the App and delet
 ## 15. Governing Law and Dispute Resolution
 
 ### 15.1 Governing Law
-These Terms are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to conflict of law principles.
+These Terms are governed by and construed in accordance with the laws of Sri Lanka, without regard to conflict of law principles.
 
 ### 15.2 Dispute Resolution
 **Informal Resolution**: Before filing a claim, you agree to contact us at whynkay@gmail.com to attempt to resolve the dispute informally.
 
-**Arbitration (If Applicable)**: Any disputes not resolved informally shall be resolved through binding arbitration in accordance with [Arbitration Rules].
+**Arbitration (If Applicable)**: Any disputes not resolved informally shall be resolved through binding arbitration in accordance with the Arbitration Act, No. 11 of 1995 (Sri Lanka).
 
 **Exception**: Either party may seek injunctive relief in court to protect intellectual property rights.
 
@@ -334,7 +334,7 @@ These Terms are governed by and construed in accordance with the laws of [Your J
 You agree to resolve disputes with us on an individual basis only, not as part of a class action, consolidated action, or representative action.
 
 ### 15.4 Jurisdiction
-If arbitration does not apply, you agree to the exclusive jurisdiction of the courts located in [Your Jurisdiction].
+If arbitration does not apply, you agree to the exclusive jurisdiction of the courts of Sri Lanka.
 
 ---
 
