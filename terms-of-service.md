@@ -365,7 +365,7 @@ If these Terms are translated into other languages, the English version shall pr
 If you have questions about these Terms of Service, please contact us:
 
 **Email**: effici@yasindu.space
-**Privacy Officer**: privacy@effici.app
+**Privacy Officer**: effici@yasindu.space
 **Response Time**: 7 business days
 
 For account-specific issues, please use the in-app support feature (Settings → Help & Support).
