@@ -1,7 +1,7 @@
 # Privacy Policy for Effici
 
-**Last Updated**: February 14, 2026
-**Effective Date**: February 14, 2026
+**Last Updated**: February 15, 2026
+**Effective Date**: February 15, 2026
 
 ## Introduction
 
@@ -107,10 +107,10 @@ We share your information with trusted third-party services that help us operate
 - **Purpose**: Displaying ads and measuring performance
 - **Privacy Policy**: https://policies.google.com/privacy
 
-#### 3. Firebase (Crash Reporting - Optional)
-- **What They Provide**: Crash analytics and performance monitoring
-- **What They Access**: Crash logs, device information, app version
-- **Purpose**: Identifying and fixing bugs
+#### 3. Firebase (Crash Reporting)
+- **What They Provide**: Crash reporting and app diagnostics
+- **What They Access**: Crash logs, stack traces, device information, app version, build metadata
+- **Purpose**: Identifying, prioritizing, and fixing stability issues
 - **Privacy Policy**: https://firebase.google.com/support/privacy
 
 **Important**: These service providers are obligated to protect your information and are prohibited from using it for purposes other than providing services to us.
@@ -162,9 +162,9 @@ You can:
 
 ### Data Deletion
 You have the right to request deletion of your data:
-- **Account Deletion**: Settings → Account → Delete Account
+- **Account Deletion**: In-app Account screen → Delete account
 - **What Gets Deleted**: All productivity data, projects, tags, session history, and your account
-- **Timeframe**: Immediate local deletion; server-side deletion within 30 days
+- **Timeframe**: Immediate local deletion; server-side account and data deletion is initiated immediately after request
 - **Cannot Be Undone**: Once deleted, your data cannot be recovered
 
 ### Advertising Control
@@ -188,7 +188,7 @@ You can:
 
 ### Deleted Accounts
 - Local data deleted immediately upon account deletion
-- Server-side data deleted within **30 days**
+- Server-side account and associated data deletion is initiated immediately
 - Backups purged within **90 days**
 - Legal obligations may require us to retain certain data longer
 

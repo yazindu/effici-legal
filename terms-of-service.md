@@ -1,7 +1,7 @@
 # Terms of Service for Effici
 
-**Last Updated**: February 14, 2026
-**Effective Date**: February 14, 2026
+**Last Updated**: February 15, 2026
+**Effective Date**: February 15, 2026
 
 ## 1. Acceptance of Terms
 
@@ -24,7 +24,7 @@ Effici is a productivity application that provides:
 
 The App is provided in two versions:
 - **Free Version**: Full functionality with advertisements
-- **Premium Version**: Ad-free experience with additional features (future)
+- **Premium Version**: Ad-free experience with additional features available via subscription plans
 
 ---
 
@@ -112,10 +112,10 @@ You retain all rights to the productivity data you create in Effici (session des
 
 ---
 
-## 6. Subscriptions and Purchases (Future)
+## 6. Subscriptions and Purchases
 
 ### 6.1 Pricing
-If you purchase Effici Premium (when available):
+If you purchase Effici Premium:
 - Prices are displayed in the App and may vary by region
 - Prices are subject to change with reasonable notice
 - Payment is processed through Google Play Store
@@ -157,7 +157,7 @@ We are not responsible for:
 
 ### 7.3 Removing Ads
 You can remove ads by:
-- Upgrading to Effici Premium (when available)
+- Upgrading to Effici Premium
 - Opting out of personalized ads (device settings)
 
 ---
@@ -167,7 +167,7 @@ You can remove ads by:
 ### 8.1 Privacy Policy
 Your use of Effici is also governed by our Privacy Policy, which is incorporated into these Terms by reference.
 
-Please read our Privacy Policy at: [Link to Privacy Policy]
+Please read our Privacy Policy at: https://yazindu.github.io/effici-legal/privacy-policy.html
 
 ### 8.2 Data Collection
 By using the App, you consent to:
@@ -210,6 +210,8 @@ In case of sync conflicts:
 
 ### 10.1 Backend Services
 Effici uses Supabase for backend infrastructure. By using Effici, you also agree to Supabase's Terms of Service and Privacy Policy.
+
+Effici also uses third-party services such as Google AdMob (advertising) and Firebase Crashlytics (crash reporting/diagnostics). Their terms and privacy practices may also apply where relevant.
 
 ### 10.2 External Links
 The App may contain links to third-party websites or services. We are not responsible for:
@@ -368,7 +370,7 @@ If you have questions about these Terms of Service, please contact us:
 **Privacy Officer**: whynkay@gmail.com
 **Response Time**: 7 business days
 
-For account-specific issues, please use the in-app support feature (Settings → Help & Support).
+For account-specific issues, please contact us via email.
 
 ---
 
