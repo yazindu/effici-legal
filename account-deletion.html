@@ -141,7 +141,7 @@
 
         <p class="note">
             If you no longer have access to your email, contact support and include your account email:
-            <code>support@effici.app</code>
+            <code>whynkay@gmail.com</code>
         </p>
     </section>
 </main>
@@ -177,6 +177,19 @@
         );
     }
 
+    function getFriendlySendError(error) {
+        const message = (error?.message ?? "").toLowerCase();
+        const code = (error?.code ?? "").toLowerCase();
+        if (
+            code === "over_email_send_rate_limit" ||
+            message.includes("over_email_send_rate_limit") ||
+            message.includes("email rate limit exceeded")
+        ) {
+            return "Too many link requests right now. Please wait a few minutes and try again.";
+        }
+        return error?.message ?? "Unable to send magic link right now.";
+    }
+
     sendLinkBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
         if (!email) {
@@ -209,7 +222,7 @@
             // Generic success to avoid account enumeration.
             setStatus("If this email is registered, a deletion magic link has been sent.");
         } catch (error) {
-            setStatus(error?.message ?? "Unable to send magic link right now.", true);
+            setStatus(getFriendlySendError(error), true);
         } finally {
             sendLinkBtn.disabled = false;
         }
