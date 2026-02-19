@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Confirm Account Deletion - Effici</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f6f7fb;
+            --card: #fff;
+            --text: #1c2333;
+            --muted: #5a6278;
+            --danger: #b42318;
+            --danger-bg: #ffeceb;
+            --ok: #166534;
+            --border: #d9deea;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(1200px 500px at 20% -10%, #ffe9e7 0%, transparent 65%), var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: min(760px, 92vw);
+            margin: 2rem auto 4rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 12px 36px rgba(28, 42, 79, 0.08);
+        }
+
+        h1 { margin: 0 0 0.8rem; line-height: 1.25; }
+        p { color: var(--muted); margin: 0.5rem 0; }
+
+        .danger-box {
+            border: 1px solid #ffd6d2;
+            background: var(--danger-bg);
+            border-radius: 12px;
+            padding: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .danger-box strong { color: var(--danger); }
+
+        button {
+            border: 0;
+            border-radius: 10px;
+            padding: 0.74rem 1rem;
+            background: var(--danger);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 0.8rem;
+            min-height: 1.2rem;
+            font-weight: 600;
+            color: var(--ok);
+        }
+
+        .error {
+            margin-top: 0.8rem;
+            min-height: 1.2rem;
+            color: var(--danger);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<main class="container">
+    <section class="card">
+        <h1>Confirm Permanent Deletion</h1>
+        <p id="intro-text">Validating your secure deletion link...</p>
+        <p id="signed-in-email"></p>
+
+        <div class="danger-box">
+            <strong>This action is permanent.</strong>
+            <p>Your Effici account and associated user data will be deleted and cannot be restored.</p>
+        </div>
+
+        <button id="delete-btn" type="button" disabled>Delete My Account Permanently</button>
+        <div id="status" class="status"></div>
+        <div id="error" class="error"></div>
+    </section>
+</main>
+
+<script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+
+    // Replace with your project values before publishing.
+    const SUPABASE_URL = "https://gddeglmchwqxesqqncif.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_FDB4Y8z7HrCaA8aeeaBSAg_iYBsHX2v";
+
+    const introEl = document.getElementById("intro-text");
+    const emailEl = document.getElementById("signed-in-email");
+    const statusEl = document.getElementById("status");
+    const errorEl = document.getElementById("error");
+    const deleteBtn = document.getElementById("delete-btn");
+
+    function setStatus(message = "", isError = false) {
+        if (isError) {
+            errorEl.textContent = message;
+            statusEl.textContent = "";
+            return;
+        }
+        statusEl.textContent = message;
+        errorEl.textContent = "";
+    }
+
+    function isConfigured() {
+        return (
+            SUPABASE_URL.startsWith("https://") &&
+            !SUPABASE_URL.includes("YOUR_PROJECT_REF") &&
+            SUPABASE_ANON_KEY &&
+            !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE_ANON_KEY")
+        );
+    }
+
+    function clearAuthParamsFromUrl() {
+        const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+        window.history.replaceState({}, document.title, cleanUrl);
+    }
+
+    async function establishSession(supabase) {
+        const query = new URLSearchParams(window.location.search);
+        const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        const code = query.get("code");
+        const accessToken = hash.get("access_token");
+        const refreshToken = hash.get("refresh_token");
+
+        if (code) {
+            const { error } = await supabase.auth.exchangeCodeForSession(code);
+            if (error) throw error;
+            clearAuthParamsFromUrl();
+        } else if (accessToken && refreshToken) {
+            const { error } = await supabase.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken
+            });
+            if (error) throw error;
+            clearAuthParamsFromUrl();
+        }
+
+        const { data, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        if (!data.session) {
+            throw new Error("Invalid or expired link. Request a new deletion magic link.");
+        }
+        return data.session;
+    }
+
+    async function init() {
+        if (!isConfigured()) {
+            introEl.textContent = "Page is not configured yet.";
+            setStatus("Set SUPABASE_URL and SUPABASE_ANON_KEY in this file before use.", true);
+            return;
+        }
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        try {
+            const session = await establishSession(supabase);
+            introEl.textContent = "Link verified. You can now permanently delete this account:";
+            emailEl.textContent = session.user?.email ?? "";
+            deleteBtn.disabled = false;
+        } catch (error) {
+            introEl.textContent = "Could not verify your deletion link.";
+            setStatus(error?.message ?? "Unable to verify link.", true);
+        }
+
+        deleteBtn.addEventListener("click", async () => {
+            deleteBtn.disabled = true;
+            setStatus("Deleting account...");
+
+            try {
+                const { error } = await supabase.rpc("delete_my_account");
+                if (error) throw error;
+                await supabase.auth.signOut();
+                setStatus("Your account and associated user data have been deleted.");
+                introEl.textContent = "Deletion completed.";
+                emailEl.textContent = "";
+            } catch (error) {
+                setStatus(error?.message ?? "Failed to delete account.", true);
+                deleteBtn.disabled = false;
+            }
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>

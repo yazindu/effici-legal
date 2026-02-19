@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Effici Account Deletion</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #1a1f2c;
+            --muted: #586074;
+            --primary: #1f4fd6;
+            --danger: #b42318;
+            --border: #d9deea;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 35%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: min(760px, 92vw);
+            margin: 2rem auto 4rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 12px 36px rgba(28, 42, 79, 0.08);
+        }
+
+        h1, h2 { line-height: 1.25; margin: 0 0 0.75rem; }
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.2rem; margin-top: 1.4rem; }
+
+        p, li { color: var(--muted); }
+        ul { padding-left: 1.2rem; margin: 0.5rem 0 0; }
+
+        .form-row { margin-top: 1rem; }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 600; }
+        input[type="email"] {
+            width: 100%;
+            padding: 0.72rem 0.82rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+        }
+
+        button {
+            margin-top: 0.9rem;
+            border: 0;
+            border-radius: 10px;
+            padding: 0.72rem 1rem;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .note {
+            border-left: 4px solid var(--primary);
+            padding: 0.75rem 0.85rem;
+            background: #f3f6ff;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .error {
+            color: var(--danger);
+            font-weight: 600;
+            margin-top: 0.8rem;
+            min-height: 1.2rem;
+        }
+
+        .status {
+            margin-top: 0.8rem;
+            min-height: 1.2rem;
+            font-weight: 600;
+            color: #165d1f;
+        }
+
+        code {
+            background: #f2f4f8;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.1rem 0.4rem;
+        }
+    </style>
+</head>
+<body>
+<main class="container">
+    <section class="card">
+        <h1>Effici Account & Data Deletion</h1>
+        <p>
+            This page belongs to the Effici app and provides a secure self-service way to request
+            account deletion.
+        </p>
+
+        <h2>How this works</h2>
+        <ul>
+            <li>Enter the email address used for your Effici account.</li>
+            <li>We send a secure magic link to that address.</li>
+            <li>Open the link to confirm and permanently delete your account.</li>
+        </ul>
+
+        <h2>What gets deleted</h2>
+        <ul>
+            <li>Authentication account</li>
+            <li>Profile</li>
+            <li>Projects, tags, sessions, stats, and related records</li>
+        </ul>
+
+        <h2>What may be retained temporarily</h2>
+        <ul>
+            <li>Operational logs and backups for a limited retention window</li>
+            <li>Data required for legal, security, or fraud-prevention obligations</li>
+        </ul>
+
+        <div class="form-row">
+            <label for="email">Effici account email</label>
+            <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <button id="send-link-btn" type="button">Send Deletion Magic Link</button>
+            <div id="status" class="status"></div>
+            <div id="error" class="error"></div>
+        </div>
+
+        <p class="note">
+            If you no longer have access to your email, contact support and include your account email:
+            <code>support@effici.app</code>
+        </p>
+    </section>
+</main>
+
+<script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+
+    // Replace with your project values before publishing.
+    const SUPABASE_URL = "https://gddeglmchwqxesqqncif.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_FDB4Y8z7HrCaA8aeeaBSAg_iYBsHX2v";
+
+    const sendLinkBtn = document.getElementById("send-link-btn");
+    const emailInput = document.getElementById("email");
+    const statusEl = document.getElementById("status");
+    const errorEl = document.getElementById("error");
+
+    function setStatus(message = "", isError = false) {
+        if (isError) {
+            errorEl.textContent = message;
+            statusEl.textContent = "";
+            return;
+        }
+        statusEl.textContent = message;
+        errorEl.textContent = "";
+    }
+
+    function isConfigured() {
+        return (
+            SUPABASE_URL.startsWith("https://") &&
+            !SUPABASE_URL.includes("YOUR_PROJECT_REF") &&
+            SUPABASE_ANON_KEY &&
+            !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE_ANON_KEY")
+        );
+    }
+
+    sendLinkBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+            setStatus("Email is required.", true);
+            return;
+        }
+        if (!isConfigured()) {
+            setStatus("Page is not configured yet. Set SUPABASE_URL and SUPABASE_ANON_KEY.", true);
+            return;
+        }
+
+        sendLinkBtn.disabled = true;
+        setStatus("Sending magic link...");
+
+        try {
+            const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const redirectTo = new URL("account-deletion-confirm.html", window.location.href).toString();
+
+            const { error } = await supabase.auth.signInWithOtp({
+                email,
+                options: { emailRedirectTo: redirectTo, shouldCreateUser: false }
+            });
+            if (
+                error &&
+                !/user not found|invalid login credentials/i.test(error.message ?? "")
+            ) {
+                throw error;
+            }
+
+            // Generic success to avoid account enumeration.
+            setStatus("If this email is registered, a deletion magic link has been sent.");
+        } catch (error) {
+            setStatus(error?.message ?? "Unable to send magic link right now.", true);
+        } finally {
+            sendLinkBtn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>
