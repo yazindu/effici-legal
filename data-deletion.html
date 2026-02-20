@@ -282,10 +282,7 @@
 </main>
 
 <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-
-    const SUPABASE_URL = "https://gddeglmchwqxesqqncif.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_FDB4Y8z7HrCaA8aeeaBSAg_iYBsHX2v";
+    const DELETE_LINK_ENDPOINT = "https://gddeglmchwqxesqqncif.supabase.co/functions/v1/send-deletion-link";
 
     const emailInput = document.getElementById("email");
     const rangeFields = document.getElementById("range-fields");
@@ -311,25 +308,7 @@
     }
 
     function isConfigured() {
-        return (
-            SUPABASE_URL.startsWith("https://") &&
-            SUPABASE_ANON_KEY &&
-            !SUPABASE_URL.includes("YOUR_PROJECT_REF") &&
-            !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE_ANON_KEY")
-        );
-    }
-
-    function getFriendlySendError(error) {
-        const message = (error?.message ?? "").toLowerCase();
-        const code = (error?.code ?? "").toLowerCase();
-        if (
-            code === "over_email_send_rate_limit" ||
-            message.includes("over_email_send_rate_limit") ||
-            message.includes("email rate limit exceeded")
-        ) {
-            return "Too many link requests right now. Please wait a few minutes and try again.";
-        }
-        return error?.message ?? "Unable to send magic link right now.";
+        return DELETE_LINK_ENDPOINT.startsWith("https://");
     }
 
     function validateInputs(scope) {
@@ -350,16 +329,6 @@
         return { ok: true };
     }
 
-    function buildRedirectUrl(scope) {
-        const redirectTo = new URL("data-deletion-confirm.html", window.location.href);
-        redirectTo.searchParams.set("scope", scope);
-        if (scope === "sessions_range") {
-            redirectTo.searchParams.set("start_date", startDateInput.value);
-            redirectTo.searchParams.set("end_date", endDateInput.value);
-        }
-        return redirectTo.toString();
-    }
-
     function onScopeChanged() {
         const scope = selectedScope();
         rangeFields.style.display = scope === "sessions_range" ? "grid" : "none";
@@ -378,7 +347,7 @@
             return;
         }
         if (!isConfigured()) {
-            setStatus("Page is not configured yet. Set SUPABASE_URL and SUPABASE_ANON_KEY.", true);
+            setStatus("Page is not configured yet. Set DELETE_LINK_ENDPOINT.", true);
             return;
         }
 
@@ -386,22 +355,26 @@
         setStatus("Sending secure confirmation link...");
 
         try {
-            const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            const { error } = await supabase.auth.signInWithOtp({
-                email: emailInput.value.trim(),
-                options: {
-                    emailRedirectTo: buildRedirectUrl(scope),
-                    shouldCreateUser: false
-                }
+            const response = await fetch(DELETE_LINK_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    flow: "data",
+                    email: emailInput.value.trim(),
+                    scope,
+                    start_date: scope === "sessions_range" ? startDateInput.value : null,
+                    end_date: scope === "sessions_range" ? endDateInput.value : null
+                })
             });
 
-            if (error && !/user not found|invalid login credentials/i.test(error.message ?? "")) {
-                throw error;
+            if (!response.ok) {
+                setStatus("Unable to send deletion link right now. Please try again.", true);
+                return;
             }
 
             setStatus("If this email is registered, a secure deletion confirmation link has been sent.");
         } catch (error) {
-            setStatus(getFriendlySendError(error), true);
+            setStatus("Unable to send deletion link right now. Please check your internet connection and try again.", true);
         } finally {
             sendLinkBtn.disabled = false;
         }
