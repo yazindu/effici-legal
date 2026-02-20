@@ -29,6 +29,16 @@ jobs:
           SHORT_SHA="${GITHUB_SHA::8}"
           printf 'window.EFFICI_LEGAL_BUILD_COMMIT = "%s";\n' "$SHORT_SHA" > assets/build-meta.js
 
+      - name: Stamp cache-busting version in HTML
+        shell: bash
+        run: |
+          SHORT_SHA="${GITHUB_SHA::8}"
+          for file in *.html; do
+            sed -E -i \
+              "s#assets/build-meta\\.js(\\?v=[^\"]*)?#assets/build-meta.js?v=${SHORT_SHA}#g; s#assets/build-footer\\.js(\\?v=[^\"]*)?#assets/build-footer.js?v=${SHORT_SHA}#g" \
+              "$file"
+          done
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
