@@ -1,0 +1,1 @@
+window.EFFICI_LEGAL_BUILD_COMMIT = "170e0f6a";
