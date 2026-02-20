@@ -147,11 +147,7 @@
 </main>
 
 <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-
-    // Replace with your project values before publishing.
-    const SUPABASE_URL = "https://gddeglmchwqxesqqncif.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_FDB4Y8z7HrCaA8aeeaBSAg_iYBsHX2v";
+    const DELETE_LINK_ENDPOINT = "https://gddeglmchwqxesqqncif.supabase.co/functions/v1/send-deletion-link";
 
     const sendLinkBtn = document.getElementById("send-link-btn");
     const emailInput = document.getElementById("email");
@@ -169,25 +165,7 @@
     }
 
     function isConfigured() {
-        return (
-            SUPABASE_URL.startsWith("https://") &&
-            !SUPABASE_URL.includes("YOUR_PROJECT_REF") &&
-            SUPABASE_ANON_KEY &&
-            !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE_ANON_KEY")
-        );
-    }
-
-    function getFriendlySendError(error) {
-        const message = (error?.message ?? "").toLowerCase();
-        const code = (error?.code ?? "").toLowerCase();
-        if (
-            code === "over_email_send_rate_limit" ||
-            message.includes("over_email_send_rate_limit") ||
-            message.includes("email rate limit exceeded")
-        ) {
-            return "Too many link requests right now. Please wait a few minutes and try again.";
-        }
-        return error?.message ?? "Unable to send magic link right now.";
+        return DELETE_LINK_ENDPOINT.startsWith("https://");
     }
 
     sendLinkBtn.addEventListener("click", async () => {
@@ -197,32 +175,32 @@
             return;
         }
         if (!isConfigured()) {
-            setStatus("Page is not configured yet. Set SUPABASE_URL and SUPABASE_ANON_KEY.", true);
+            setStatus("Page is not configured yet. Set DELETE_LINK_ENDPOINT.", true);
             return;
         }
 
         sendLinkBtn.disabled = true;
-        setStatus("Sending magic link...");
+        setStatus("Sending secure deletion link...");
 
         try {
-            const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            const redirectTo = new URL("account-deletion-confirm.html", window.location.href).toString();
-
-            const { error } = await supabase.auth.signInWithOtp({
-                email,
-                options: { emailRedirectTo: redirectTo, shouldCreateUser: false }
+            const response = await fetch(DELETE_LINK_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    flow: "account",
+                    email
+                })
             });
-            if (
-                error &&
-                !/user not found|invalid login credentials/i.test(error.message ?? "")
-            ) {
-                throw error;
+
+            if (!response.ok) {
+                setStatus("Unable to send deletion link right now. Please try again.", true);
+                return;
             }
 
             // Generic success to avoid account enumeration.
             setStatus("If this email is registered, a deletion magic link has been sent.");
         } catch (error) {
-            setStatus(getFriendlySendError(error), true);
+            setStatus("Unable to send deletion link right now. Please check your internet connection and try again.", true);
         } finally {
             sendLinkBtn.disabled = false;
         }
