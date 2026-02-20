@@ -11,6 +11,7 @@
             --text: #1a1f2c;
             --muted: #586074;
             --primary: #1f4fd6;
+            --danger: #b42318;
             --border: #d9deea;
         }
 
@@ -38,11 +39,12 @@
             margin-bottom: 1rem;
         }
 
-        h1, h2 { line-height: 1.25; margin: 0 0 0.75rem; }
+        h1, h2, h3 { line-height: 1.25; margin: 0 0 0.75rem; }
         h1 { font-size: 1.85rem; }
         h2 { font-size: 1.2rem; margin-top: 1rem; }
+        h3 { font-size: 1.05rem; margin-top: 1rem; }
 
-        p, li, td, th { color: var(--muted); }
+        p, li, td, th, label { color: var(--muted); }
         ul { padding-left: 1.2rem; margin: 0.5rem 0 0; }
 
         .actions {
@@ -53,20 +55,87 @@
         }
 
         .btn {
-            display: inline-block;
             border: 0;
             border-radius: 10px;
             padding: 0.72rem 1rem;
             background: var(--primary);
             color: #fff;
-            text-decoration: none;
             font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn.secondary {
             background: transparent;
             color: var(--primary);
             border: 1px solid var(--primary);
+        }
+
+        .btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+        }
+
+        .row {
+            display: grid;
+            gap: 0.6rem;
+        }
+
+        @media (min-width: 700px) {
+            .row.two {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        input[type="email"], input[type="date"] {
+            width: 100%;
+            padding: 0.72rem 0.82rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .radio {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.7rem;
+        }
+
+        .radio label {
+            display: flex;
+            gap: 0.55rem;
+            align-items: flex-start;
+            color: var(--text);
+        }
+
+        .note {
+            border-left: 4px solid var(--primary);
+            padding: 0.75rem 0.85rem;
+            background: #f3f6ff;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .status {
+            margin-top: 0.8rem;
+            min-height: 1.2rem;
+            font-weight: 600;
+            color: #165d1f;
+        }
+
+        .error {
+            margin-top: 0.3rem;
+            min-height: 1.2rem;
+            color: var(--danger);
+            font-weight: 600;
         }
 
         table {
@@ -93,6 +162,7 @@
             border: 1px solid var(--border);
             border-radius: 6px;
             padding: 0.1rem 0.4rem;
+            color: #364055;
         }
     </style>
 </head>
@@ -101,74 +171,241 @@
     <section class="card">
         <h1>Effici Data Deletion Requests</h1>
         <p>
-            This page is for the <strong>Effici</strong> app and explains how to request deletion of your data.
-            It is intended for users visiting from the Google Play listing.
+            This page belongs to the <strong>Effici</strong> app and is the data deletion request URL shown on Google Play.
+        </p>
+        <ul>
+            <li>Use this page to request data deletion with secure email verification.</li>
+            <li>You can delete all app data while keeping your account, or delete session data for a date range.</li>
+            <li>If you want account + all data deleted, use the account deletion flow below.</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>Request deletion while keeping your account</h2>
+        <p>Step 1: Choose what to delete and send yourself a secure confirmation link.</p>
+
+        <div class="form-grid">
+            <div>
+                <label for="email"><strong>Effici account email</strong></label>
+                <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="radio">
+                <label>
+                    <input type="radio" name="deletion-scope" value="all_keep_account" checked>
+                    <span>
+                        <strong>Delete all productivity data, keep account</strong><br>
+                        Sessions, distractions, projects, tags, daily stats, timer configs.
+                    </span>
+                </label>
+            </div>
+
+            <div class="radio">
+                <label>
+                    <input type="radio" name="deletion-scope" value="sessions_range">
+                    <span>
+                        <strong>Delete session data for a date range, keep account</strong><br>
+                        Deletes sessions/distractions and daily stats for the selected range.
+                    </span>
+                </label>
+            </div>
+
+            <div id="range-fields" class="row two" style="display: none;">
+                <div>
+                    <label for="start-date">Start date</label>
+                    <input id="start-date" type="date">
+                </div>
+                <div>
+                    <label for="end-date">End date</label>
+                    <input id="end-date" type="date">
+                </div>
+            </div>
+
+            <div>
+                <button id="send-link-btn" type="button" class="btn">Send Secure Deletion Link</button>
+                <div id="status" class="status"></div>
+                <div id="error" class="error"></div>
+            </div>
+        </div>
+
+        <p class="note">
+            For security, deletion is only executed after opening the email link and confirming on the next page.
         </p>
     </section>
 
     <section class="card">
-        <h2>Option A: Delete account and all app data</h2>
-        <ul>
-            <li>Open the account deletion flow and submit your account email.</li>
-            <li>Confirm via secure email magic link.</li>
-            <li>Your Effici account and associated app data are permanently deleted.</li>
-        </ul>
-        <div class="actions">
-            <a class="btn" href="account-deletion.html">Delete account and all data</a>
-        </div>
-    </section>
-
-    <section class="card">
-        <h2>Option B: Delete some data and keep your account</h2>
+        <h2>Delete account and all data</h2>
         <p>
-            If you want to keep your account but remove specific data (for example sessions from a date range),
-            send a deletion request email.
+            If you want to permanently remove your Effici account itself (not only app data), use this flow:
         </p>
-        <ul>
-            <li>Send email to <code>whynkay@gmail.com</code> with subject: <code>Effici Data Deletion Request</code>.</li>
-            <li>Include your Effici account email and what should be deleted (e.g. sessions/projects/tags/date range).</li>
-            <li>We may ask you to verify account ownership before processing.</li>
-            <li>Target processing time: within 30 days.</li>
-        </ul>
         <div class="actions">
-            <a class="btn secondary" href="mailto:whynkay@gmail.com?subject=Effici%20Data%20Deletion%20Request">Request partial deletion by email</a>
+            <a class="btn secondary" href="account-deletion.html">Open account deletion flow</a>
         </div>
     </section>
 
     <section class="card">
-        <h2>What data is deleted or retained</h2>
+        <h2>What gets deleted or retained</h2>
         <table>
             <thead>
             <tr>
                 <th>Data type</th>
-                <th>Deleted when requested</th>
-                <th>What may be kept and for how long</th>
+                <th>Deleted</th>
+                <th>Retention notes</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>Effici account identity (auth user/profile)</td>
-                <td>Deleted for full account deletion requests.</td>
-                <td>May be retained only where required for legal/security obligations.</td>
+                <td>Productivity data (sessions, distractions, projects, tags, daily stats, timer configs)</td>
+                <td>Deleted based on the option you select.</td>
+                <td>Backups and operational logs may persist temporarily, typically up to 30 days.</td>
             </tr>
             <tr>
-                <td>Productivity data (sessions, distractions, projects, tags, stats, timer settings)</td>
-                <td>Deleted for full account deletion, or selectively for partial deletion requests.</td>
-                <td>Encrypted backups/logs may persist temporarily for up to 30 days.</td>
-            </tr>
-            <tr>
-                <td>Crash/security/operational logs</td>
-                <td>Not always tied to direct account deletion workflows.</td>
-                <td>Retained only for reliability/security purposes for a limited period (typically up to 90 days).</td>
+                <td>Effici auth account and profile</td>
+                <td>Deleted only in the account deletion flow.</td>
+                <td>May be retained only if required for legal/security reasons.</td>
             </tr>
             <tr>
                 <td>Billing transactions (Google Play)</td>
-                <td>Not directly deleted by Effici (managed by Google Play).</td>
-                <td>Retained by payment provider per legal/accounting requirements.</td>
+                <td>Not deleted by Effici systems.</td>
+                <td>Managed by Google Play under legal/accounting requirements.</td>
             </tr>
             </tbody>
         </table>
     </section>
+
+    <section class="card">
+        <h3>Need help?</h3>
+        <p>
+            If you cannot access your email, contact support at <code>whynkay@gmail.com</code> and include your Effici account email.
+        </p>
+    </section>
 </main>
+
+<script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+
+    const SUPABASE_URL = "https://gddeglmchwqxesqqncif.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_FDB4Y8z7HrCaA8aeeaBSAg_iYBsHX2v";
+
+    const emailInput = document.getElementById("email");
+    const rangeFields = document.getElementById("range-fields");
+    const startDateInput = document.getElementById("start-date");
+    const endDateInput = document.getElementById("end-date");
+    const sendLinkBtn = document.getElementById("send-link-btn");
+    const statusEl = document.getElementById("status");
+    const errorEl = document.getElementById("error");
+
+    function setStatus(message = "", isError = false) {
+        if (isError) {
+            errorEl.textContent = message;
+            statusEl.textContent = "";
+            return;
+        }
+        statusEl.textContent = message;
+        errorEl.textContent = "";
+    }
+
+    function selectedScope() {
+        const checked = document.querySelector('input[name="deletion-scope"]:checked');
+        return checked ? checked.value : "all_keep_account";
+    }
+
+    function isConfigured() {
+        return (
+            SUPABASE_URL.startsWith("https://") &&
+            SUPABASE_ANON_KEY &&
+            !SUPABASE_URL.includes("YOUR_PROJECT_REF") &&
+            !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE_ANON_KEY")
+        );
+    }
+
+    function getFriendlySendError(error) {
+        const message = (error?.message ?? "").toLowerCase();
+        const code = (error?.code ?? "").toLowerCase();
+        if (
+            code === "over_email_send_rate_limit" ||
+            message.includes("over_email_send_rate_limit") ||
+            message.includes("email rate limit exceeded")
+        ) {
+            return "Too many link requests right now. Please wait a few minutes and try again.";
+        }
+        return error?.message ?? "Unable to send magic link right now.";
+    }
+
+    function validateInputs(scope) {
+        const email = emailInput.value.trim();
+        if (!email) {
+            return { ok: false, message: "Email is required." };
+        }
+        if (scope === "sessions_range") {
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+            if (!startDate || !endDate) {
+                return { ok: false, message: "Start date and end date are required for range deletion." };
+            }
+            if (endDate < startDate) {
+                return { ok: false, message: "End date must be on or after start date." };
+            }
+        }
+        return { ok: true };
+    }
+
+    function buildRedirectUrl(scope) {
+        const redirectTo = new URL("data-deletion-confirm.html", window.location.href);
+        redirectTo.searchParams.set("scope", scope);
+        if (scope === "sessions_range") {
+            redirectTo.searchParams.set("start_date", startDateInput.value);
+            redirectTo.searchParams.set("end_date", endDateInput.value);
+        }
+        return redirectTo.toString();
+    }
+
+    function onScopeChanged() {
+        const scope = selectedScope();
+        rangeFields.style.display = scope === "sessions_range" ? "grid" : "none";
+    }
+
+    document.querySelectorAll('input[name="deletion-scope"]').forEach((radio) => {
+        radio.addEventListener("change", onScopeChanged);
+    });
+    onScopeChanged();
+
+    sendLinkBtn.addEventListener("click", async () => {
+        const scope = selectedScope();
+        const validation = validateInputs(scope);
+        if (!validation.ok) {
+            setStatus(validation.message, true);
+            return;
+        }
+        if (!isConfigured()) {
+            setStatus("Page is not configured yet. Set SUPABASE_URL and SUPABASE_ANON_KEY.", true);
+            return;
+        }
+
+        sendLinkBtn.disabled = true;
+        setStatus("Sending secure confirmation link...");
+
+        try {
+            const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const { error } = await supabase.auth.signInWithOtp({
+                email: emailInput.value.trim(),
+                options: {
+                    emailRedirectTo: buildRedirectUrl(scope),
+                    shouldCreateUser: false
+                }
+            });
+
+            if (error && !/user not found|invalid login credentials/i.test(error.message ?? "")) {
+                throw error;
+            }
+
+            setStatus("If this email is registered, a secure deletion confirmation link has been sent.");
+        } catch (error) {
+            setStatus(getFriendlySendError(error), true);
+        } finally {
+            sendLinkBtn.disabled = false;
+        }
+    });
+</script>
 </body>
 </html>
