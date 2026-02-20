@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Effici Data Deletion Requests</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #1a1f2c;
+            --muted: #586074;
+            --primary: #1f4fd6;
+            --border: #d9deea;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 35%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: min(860px, 94vw);
+            margin: 2rem auto 4rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 12px 36px rgba(28, 42, 79, 0.08);
+            margin-bottom: 1rem;
+        }
+
+        h1, h2 { line-height: 1.25; margin: 0 0 0.75rem; }
+        h1 { font-size: 1.85rem; }
+        h2 { font-size: 1.2rem; margin-top: 1rem; }
+
+        p, li, td, th { color: var(--muted); }
+        ul { padding-left: 1.2rem; margin: 0.5rem 0 0; }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.9rem;
+        }
+
+        .btn {
+            display: inline-block;
+            border: 0;
+            border-radius: 10px;
+            padding: 0.72rem 1rem;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.65rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--text);
+            background: #f7f9ff;
+        }
+
+        code {
+            background: #f2f4f8;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.1rem 0.4rem;
+        }
+    </style>
+</head>
+<body>
+<main class="container">
+    <section class="card">
+        <h1>Effici Data Deletion Requests</h1>
+        <p>
+            This page is for the <strong>Effici</strong> app and explains how to request deletion of your data.
+            It is intended for users visiting from the Google Play listing.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Option A: Delete account and all app data</h2>
+        <ul>
+            <li>Open the account deletion flow and submit your account email.</li>
+            <li>Confirm via secure email magic link.</li>
+            <li>Your Effici account and associated app data are permanently deleted.</li>
+        </ul>
+        <div class="actions">
+            <a class="btn" href="account-deletion.html">Delete account and all data</a>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Option B: Delete some data and keep your account</h2>
+        <p>
+            If you want to keep your account but remove specific data (for example sessions from a date range),
+            send a deletion request email.
+        </p>
+        <ul>
+            <li>Send email to <code>whynkay@gmail.com</code> with subject: <code>Effici Data Deletion Request</code>.</li>
+            <li>Include your Effici account email and what should be deleted (e.g. sessions/projects/tags/date range).</li>
+            <li>We may ask you to verify account ownership before processing.</li>
+            <li>Target processing time: within 30 days.</li>
+        </ul>
+        <div class="actions">
+            <a class="btn secondary" href="mailto:whynkay@gmail.com?subject=Effici%20Data%20Deletion%20Request">Request partial deletion by email</a>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>What data is deleted or retained</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Data type</th>
+                <th>Deleted when requested</th>
+                <th>What may be kept and for how long</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Effici account identity (auth user/profile)</td>
+                <td>Deleted for full account deletion requests.</td>
+                <td>May be retained only where required for legal/security obligations.</td>
+            </tr>
+            <tr>
+                <td>Productivity data (sessions, distractions, projects, tags, stats, timer settings)</td>
+                <td>Deleted for full account deletion, or selectively for partial deletion requests.</td>
+                <td>Encrypted backups/logs may persist temporarily for up to 30 days.</td>
+            </tr>
+            <tr>
+                <td>Crash/security/operational logs</td>
+                <td>Not always tied to direct account deletion workflows.</td>
+                <td>Retained only for reliability/security purposes for a limited period (typically up to 90 days).</td>
+            </tr>
+            <tr>
+                <td>Billing transactions (Google Play)</td>
+                <td>Not directly deleted by Effici (managed by Google Play).</td>
+                <td>Retained by payment provider per legal/accounting requirements.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

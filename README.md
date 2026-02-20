@@ -7,6 +7,7 @@ This repository hosts the legal documents for the Effici productivity app.
 - [Privacy Policy](https://yazindu.github.io/effici-legal/privacy-policy.html)
 - [Terms of Service](https://yazindu.github.io/effici-legal/terms-of-service.html)
 - [Account Deletion](https://yazindu.github.io/effici-legal/account-deletion.html)
+- [Data Deletion Requests](https://yazindu.github.io/effici-legal/data-deletion.html)
 
 ## Hosting
 
