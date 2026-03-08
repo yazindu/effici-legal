@@ -167,7 +167,7 @@ You can remove ads by:
 ### 8.1 Privacy Policy
 Your use of Effici is also governed by our Privacy Policy, which is incorporated into these Terms by reference.
 
-Please read our Privacy Policy at: https://yazindu.github.io/effici-legal/privacy-policy.html
+Please read our Privacy Policy at: https://effici.yasindu.space/privacy-policy.html
 
 ### 8.2 Data Collection
 By using the App, you consent to:
